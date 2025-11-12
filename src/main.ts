@@ -7,6 +7,27 @@ const get = async <T>(URL: string) => {
   return data;
 };
 
+
+export type OmdbResponse = {
+  Search: Movie[];
+};
+
+export type Movie = {
+  Title: string;
+  Poster: string;
+  imdbID: string;
+};
+export const getMovies = async (searchText: string) => {
+  const response = await get<OmdbResponse>(`${BASE_URL}s=${searchText}`);
+  return response.Search;
+};
+
+export const getMovieById = async (id: string) => {
+  return await get<Movie>(`${BASE_URL}i=${id}`);
+};
+
+
+window.addEventListener("DOMContentLoaded", () => {
 const app = document.getElementById("app") as HTMLElement;
 
 const form = document.createElement("form");
@@ -27,21 +48,4 @@ movies.id = "movies";
 
 app.appendChild(form);
 app.appendChild(movies);
-
-export type OmdbResponse = {
-  Search: Movie[];
-};
-
-export type Movie = {
-  Title: string;
-  Poster: string;
-  imdbID: string;
-};
-export const getMovies = async (searchText: string) => {
-  const response = await get<OmdbResponse>(`${BASE_URL}s=${searchText}`);
-  return response.Search;
-};
-
-export const getMovieById = async (id: string) => {
-  return await get<Movie>(`${BASE_URL}i=${id}`);
-};
+});
